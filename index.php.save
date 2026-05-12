@@ -1,0 +1,34 @@
+<?php
+$con = pg_connect("host=localhost port=5432 dbname=datos user=postgres password=postgres");
+
+$accion = $_GET['accion'] ?? 'listar';
+$id = intval($_GET['id'] ?? 0);
+
+if ($accion === 'eliminar' && $id > 0) {
+    pg_query_params($con, "DELETE FROM empleados WHERE id=$1", [$id]);
+    $accion = 'listar';
+}
+
+if ($accion === 'guardar_nuevo' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    pg_query_params($con,
+        "INSERT INTO empleados (nomb_emp,edad,sexo,basico,estado,fecha_ingreso,telefono,cod_ciud) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+        [$_POST['nomb_emp'], $_POST['edad'], $_POST['sexo'], $_POST['basico'], $_POST['estado'], $_POST['fecha_ingreso'], $_POST['telefono'], $_POST['cod_ciud']]
+    );
+    $accion = 'listar';
+}
+
+if ($accion === 'guardar_editar' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    pg_query_params($con,
+        "UPDATE empleados SET nomb_emp=$1,edad=$2,sexo=$3,basico=$4,estado=$5,fecha_ingreso=$6,telefono=$7,cod_ciud=$8 WHERE id=$9",
+        [$_POST['nomb_emp'], $_POST['edad'], $_POST['sexo'], $_POST['basico'], $_POST['estado'], $_POST['fecha_ingreso'], $_POST['telefono'], $_POST['cod_ciud'], intval($_POST['id'])]
+    );
+    $accion = 'listar';
+}
+
+$emp = [];
+if ($accion === 'editar' && $id > 0)
+    $emp = pg_fetch_assoc(pg_query_params($con, "SELECT * FROM empleados WHERE id=$1", [$id]));
+
+$ciudades = [];
+$rc = pg_query($con, "SELECT * FROM ciudades ORDER BY nomb_ciud");
+while ($c = pg_fetch_assoc($rc)) $ciudade 
