@@ -1,8 +1,1 @@
-# proyecto-php
-# proyecto-php
-# proyecto-php
-# proyecto-php
-# proyecto-php
-# proyecto-php
-# proyecto-php
-# proyecto-php
+# me vale verga, trabaje bryan de mrd
