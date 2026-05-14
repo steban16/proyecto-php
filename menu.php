@@ -32,7 +32,6 @@ $periodo = $_GET['periodo'];
         }
     </style>
 </head>
-<body>
 
 <div class="box">
     <h2>📚 Menú del Curso</h2>
